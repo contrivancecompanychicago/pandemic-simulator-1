@@ -3,6 +3,7 @@
 #include <math.h>
 #include "simulation.hpp"
 #include "location.hpp"
+#include <iostream>
 
 #define AT 0.5
 
@@ -38,6 +39,20 @@ namespace sim{
     return (this->getDistance(destination) <= AT);
   }
   //Move to destination
-  void Location::move(Location destination){
+  bool Location::move(Location destination, double speed){
+    double distance = this->getDistance(destination);
+    std::cout << "(" << this->x << ", " << this->y <<")" << distance << std::endl;
+    double dx = destination.getX() - this->x;
+    double dy = destination.getY() - this->y;
+    double alpha = atan2(dy, dx);
+    if(distance < speed){
+      x = destination.getX();
+      y = destination.getY();
+      return true;
+    } else{
+      x += speed*cos(alpha);
+      y += speed*sin(alpha);
+      return false;
+    }
   }
 }

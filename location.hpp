@@ -13,7 +13,7 @@ namespace sim{
     Location getLocation() const;
     double getDistance(Location point) const;
     bool atLocation(Location destination) const;
-    void move(Location destination);
+    bool move(Location destination, double speed);
 
   };
 }
