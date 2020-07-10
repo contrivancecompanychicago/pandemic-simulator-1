@@ -10,9 +10,11 @@
 namespace sim{
   //Constructors
   Location::Location(){
-    srand((unsigned)time(NULL));
+    static int counter = 0;
+    srand((unsigned)time(NULL)+counter);
     x = rand()%MAX_X;
     y = rand()%MAX_Y;
+    counter++;
   }
   Location::Location(double xx, double yy)
     :x(xx), y(yy){}
@@ -23,9 +25,6 @@ namespace sim{
   }
   double Location::getY() const{
     return y;
-  }
-  Location Location::getLocation() const{
-    return Location(this->x, this->y);
   }
 
   //Get distance between this point and another
