@@ -1,9 +1,8 @@
 #include <cstdlib>
 #include <ctime>
 #include <math.h>
-#include "simulation.hpp"
+#include "simulation.h"
 #include "location.hpp"
-#include <iostream>
 
 #define AT 0.5
 
@@ -19,12 +18,18 @@ namespace sim{
   Location::Location(double xx, double yy)
     :x(xx), y(yy){}
 
-  //Getters for the coordinates
+  //Getters and setters for the coordinates
   double Location::getX() const{
     return x;
   }
   double Location::getY() const{
     return y;
+  }
+  void Location::setX(double nx){
+    x = nx;
+  }
+  void Location::setY(double ny){
+    y = ny;
   }
 
   //Get distance between this point and another
@@ -40,7 +45,6 @@ namespace sim{
   //Move to destination
   bool Location::move(Location destination, double speed){
     double distance = this->getDistance(destination);
-    std::cout << "(" << this->x << ", " << this->y <<")" << distance << std::endl;
     double dx = destination.getX() - this->x;
     double dy = destination.getY() - this->y;
     double alpha = atan2(dy, dx);
