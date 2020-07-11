@@ -14,7 +14,7 @@
 #define POPULAR_PLACES 100
 
 //Chance of infection upon contact
-#define INFECTION_CHANCE 0.45
+#define INFECTION_CHANCE 0.4
 
 //Number of hours the infection lasts for
 //Randomize in the future

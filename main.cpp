@@ -1,11 +1,14 @@
-#include "person.hpp"
-#include "simulation.h"
-#include "popularplace.hpp"
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
 #include <vector>
-#include <unistd.h>
+#include "person.hpp"
+#include "simulation.h"
+#include "popularplace.hpp"
+
+extern "C"{
+  void logHour(FILE* file, int totalCases, int activeCases, int deaths, int recoveries);
+}
 
 void simulation(){
   using namespace sim;
@@ -15,6 +18,7 @@ void simulation(){
   std::vector<Person*> vulnerablePeople;
   std::vector<Person*> tempPeople;
   srand(time(NULL));
+  FILE* file = fopen("data.csv", "w");
   //Initializing people
   int i;
   for(i=0;i<NUM_OF_PEOPLE; i++){
@@ -74,9 +78,10 @@ void simulation(){
         infectedPeople[people[i]->id] = NULL;
       }
     }
-    //Need to add to totals
     hourNumber++;
+    logHour(file, totalCases, activeCases, deaths, recoveries);
   } while(activeCases != 0);
+  fclose(file);
   std::cout << "Total Cases: " << totalCases  << " Active Cases: " << activeCases << " Deaths: " << deaths << " Recoveries: " << recoveries <<" Hour:" <<  hourNumber << std::endl;
 }
 
