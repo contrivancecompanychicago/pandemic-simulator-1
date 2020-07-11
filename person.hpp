@@ -7,14 +7,11 @@
 namespace sim{
   class Person{
   private:
-    unsigned int status;
     Location* location;
-    unsigned int locationStatus;
-    const Place* home;
-    unsigned int elapsedTimeSinceInfection;
-    bool isSocialDistancing;
-    unsigned int timeSinceArrival;
     Location* targetLocation;
+    const Place* home;
+    bool isSocialDistancing;
+    unsigned int timeSinceArrival, timeTillDeparture, locationStatus, status, elapsedTimeSinceInfection;
   public:
     Person();
     ~Person();
@@ -22,7 +19,6 @@ namespace sim{
     Location* getLocation() const;
     int addHour();
     void action();
-    void setTargetLocation(Location& nlocation);
   };
 }
 #endif

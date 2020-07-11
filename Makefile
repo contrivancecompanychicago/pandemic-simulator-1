@@ -10,7 +10,7 @@ place.o: place.hpp place.cpp
 popularplace.o: place.hpp place.cpp simulation.h popularplace.hpp popularplace.cpp
 	g++ -c popularplace.cpp
 
-person.o: person.cpp person.hpp location.hpp simulation.h place.hpp place.cpp location.cpp
+person.o: person.cpp person.hpp location.hpp simulation.h place.hpp place.cpp location.cpp popularplace.o
 	g++ -c person.cpp
 clean:
 	rm *.o
