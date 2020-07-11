@@ -9,11 +9,8 @@
 namespace sim{
   //Constructors
   Location::Location(){
-    static int counter = 0;
-    srand((unsigned)time(NULL)+counter);
     x = rand()%MAX_X;
     y = rand()%MAX_Y;
-    counter++;
   }
   Location::Location(double xx, double yy)
     :x(xx), y(yy){}

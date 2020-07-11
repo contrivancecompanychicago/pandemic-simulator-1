@@ -8,6 +8,7 @@ namespace sim{
   private:
     bool open;
     int numOfCasesToReopen;
+    unsigned int index;
     static int arraycounter;
   public:
     static PopularPlace* places[POPULAR_PLACES];

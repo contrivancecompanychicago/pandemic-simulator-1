@@ -1,5 +1,5 @@
-main: location.o simulation.h main.cpp place.o popularplace.o
-	g++ -o main main.cpp location.o place.o popularplace.o
+main: main.cpp simulation.h location.o place.o popularplace.o person.o
+	g++ -o main main.cpp *.o
 
 location.o: location.cpp location.hpp simulation.h
 	g++ -c location.cpp

@@ -13,12 +13,14 @@ namespace sim{
     bool isSocialDistancing;
     unsigned int timeSinceArrival, timeTillDeparture, locationStatus, status, elapsedTimeSinceInfection;
   public:
+    int id;
     Person();
     ~Person();
     bool on_contact();
     Location* getLocation() const;
     int addHour();
     void action();
+    void setStatus(int newstatus);
   };
 }
 #endif

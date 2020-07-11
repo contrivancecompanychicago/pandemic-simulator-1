@@ -2,16 +2,20 @@
 #include "simulation.h"
 
 namespace sim{
+  int PopularPlace::arraycounter = 0;
+  PopularPlace* PopularPlace::places[POPULAR_PLACES];
   PopularPlace::PopularPlace()
     :open(true){
-      places[arraycounter] = this;
-      arraycounter++;
+      PopularPlace::places[PopularPlace::arraycounter] = this;
+      index = PopularPlace::arraycounter;
+      PopularPlace::arraycounter++;
     }
 
   PopularPlace::PopularPlace(double x, double y)
     :Place(x, y), open(true){
-      places[arraycounter] = this;
-      arraycounter++;
+      places[PopularPlace::arraycounter] = this;
+      index = PopularPlace::arraycounter;
+      PopularPlace::arraycounter++;
     }
 
   bool PopularPlace::isOpen() const{
