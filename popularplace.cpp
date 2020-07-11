@@ -3,10 +3,16 @@
 
 namespace sim{
   PopularPlace::PopularPlace()
-    :open(true){}
+    :open(true){
+      places[arraycounter] = this;
+      arraycounter++;
+    }
 
   PopularPlace::PopularPlace(double x, double y)
-    :Place(x, y), open(true){}
+    :Place(x, y), open(true){
+      places[arraycounter] = this;
+      arraycounter++;
+    }
 
   bool PopularPlace::isOpen() const{
     return open;

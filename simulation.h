@@ -28,6 +28,12 @@
 //Fatality rate
 #define FATALITY_RATE 0.1
 
+//Maximum amountt of time a person can spend in a popular place
+#define MAX_TIME_AT_POPULAR_PLACE 4
+
+//Maximum amount of time a person can spend at home
+#define MAX_TIME_AT_HOME 16
+
 namespace sim{
   //Disease status
   enum{IMMUNE, VULNERABLE, INFECTED, DEAD};
