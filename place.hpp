@@ -5,9 +5,8 @@
 
 namespace sim{
   class Place{
-  private:
-    Location* location;
   public:
+    Location* location;
     Place();
     Place(double x, double y);
     ~Place();
