@@ -11,7 +11,7 @@ namespace sim{
     Location* targetLocation;
     const Place* home;
     bool isSocialDistancing;
-    unsigned int timeSinceArrival, timeTillDeparture, locationStatus, status, elapsedTimeSinceInfection;
+    unsigned int timeSinceArrival, timeTillDeparture, locationStatus, status, elapsedTimeSinceInfection, infection_duration;
   public:
     int id;
     Person();
@@ -21,6 +21,7 @@ namespace sim{
     int addHour();
     void action();
     void setStatus(int newstatus);
+    int getLocationStatus() const;
   };
 }
 #endif

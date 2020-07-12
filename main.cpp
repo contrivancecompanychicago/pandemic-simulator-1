@@ -48,13 +48,15 @@ void simulation(){
       if(infectedPeople[i] != NULL){
         for(x=0;x<vulnerablePeople.size();x++){
           if(vulnerablePeople[x] != NULL){
-            if(infectedPeople[i]->getLocation()->getDistance(*(vulnerablePeople[x]->getLocation())) <= INFECTION_RADIUS){
-              if(vulnerablePeople[x]->on_contact() == true){
-                vulnerablePeople[x]->setStatus(INFECTED);
-                totalCases++;
-                activeCases++;
-                tempPeople.push_back(vulnerablePeople[x]);
-                vulnerablePeople[x] = NULL;
+            if(vulnerablePeople[x]->getLocationStatus() != AT_HOME){
+              if(infectedPeople[i]->getLocation()->getDistance(*(vulnerablePeople[x]->getLocation())) <= INFECTION_RADIUS){
+                if(vulnerablePeople[x]->on_contact() == true){
+                  vulnerablePeople[x]->setStatus(INFECTED);
+                  totalCases++;
+                  activeCases++;
+                  tempPeople.push_back(vulnerablePeople[x]);
+                  vulnerablePeople[x] = NULL;
+                }
               }
             }
           }
@@ -80,9 +82,9 @@ void simulation(){
     }
     hourNumber++;
     logHour(file, totalCases, activeCases, deaths, recoveries);
+    std::cout << "Total Cases: " << totalCases  << " Active Cases: " << activeCases << " Deaths: " << deaths << " Recoveries: " << recoveries <<" Hour:" <<  hourNumber << std::endl;
   } while(activeCases != 0);
   fclose(file);
-  std::cout << "Total Cases: " << totalCases  << " Active Cases: " << activeCases << " Deaths: " << deaths << " Recoveries: " << recoveries <<" Hour:" <<  hourNumber << std::endl;
 }
 
 int main(){

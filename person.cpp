@@ -2,13 +2,14 @@
 #include "simulation.h"
 #include "popularplace.hpp"
 #include <cmath>
+#include <iostream>
 #include <cstdlib>
 
 namespace sim{
   Person::Person()
     : status(VULNERABLE), elapsedTimeSinceInfection(0),
     locationStatus(AT_HOME), timeSinceArrival(0),
-    timeTillDeparture(0)
+    timeTillDeparture(0),  infection_duration(rand()%MAX_INFECTION_DURATION)
   {
     home = new Place();
     location = new Location(home->location->getX(), home->location->getY());
@@ -28,6 +29,11 @@ namespace sim{
     if(status == VULNERABLE){
       if(fmod(rand(), (100/(INFECTION_CHANCE*100))+1) == 0){
         status = INFECTED;
+        test:
+        if(infection_duration <= 38){
+          infection_duration = rand()%MAX_INFECTION_DURATION;
+          goto test;
+        }
         return true;
       } else{
         return false;
@@ -75,7 +81,7 @@ namespace sim{
   int Person::addHour(){
     if(status == INFECTED){
       elapsedTimeSinceInfection++;
-      if(elapsedTimeSinceInfection >= INFECTION_DURATION){
+      if(elapsedTimeSinceInfection >= infection_duration){
         if(rand()%(((int)(100/(FATALITY_RATE*100)))+1) == 0){
           status = DEAD;
           action();
@@ -102,5 +108,8 @@ namespace sim{
   }
   void Person::setStatus(int newstatus){
     status = newstatus;
+  }
+  int Person::getLocationStatus() const{
+    return locationStatus;
   }
 }
