@@ -2,16 +2,16 @@
 #define SIMULATION_H
 
 //setting max size of area
-#define MAX_X 200000
-#define MAX_Y 200000
+#define MAX_X 1000
+#define MAX_Y 1000
 
 //Number of people in the simulation
-#define NUM_OF_PEOPLE 20000
+#define NUM_OF_PEOPLE 400
 //Max speed of person
-#define MAX_SPEED 950
+#define MAX_SPEED 50
 
-//Number of popular places
-#define POPULAR_PLACES 200
+//Number of popular places (must be greater than 0)
+#define POPULAR_PLACES 20
 
 //Chance of infection upon contact
 #define INFECTION_CHANCE 0.20
@@ -21,7 +21,7 @@
 #define MAX_INFECTION_DURATION 168
 
 //The distance a person has to be from an infected individual in order to catch the pathogen
-#define INFECTION_RADIUS 1
+#define INFECTION_RADIUS 2
 
 //Chance that person is social is social distancing
 #define SOCIAL_DISTANCING_CHANCE 0.65
@@ -36,7 +36,13 @@
 #define MAX_TIME_AT_HOME 20
 
 //Number of cases at the start of the simulation
-#define NUMBER_OF_CASES_UPON_START 5
+#define NUMBER_OF_CASES_UPON_START 1
+
+//Defining color for different status types
+#define VULNERABLE_COLOR Color::White
+#define INFECTED_COLOR Color::Red
+#define IMMUNE_COLOR Color::Blue
+#define DEAD_COLOR Color::Black
 
 namespace sim{
   //Disease status

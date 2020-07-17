@@ -1,5 +1,5 @@
 main: main.cpp simulation.h location.o place.o popularplace.o person.o data.o
-	g++ -o main main.cpp *.o
+	g++ -o main main.cpp *.o -I./include -lsfml-graphics -lsfml-window -lsfml-system
 
 location.o: location.cpp location.hpp simulation.h
 	g++ -c location.cpp

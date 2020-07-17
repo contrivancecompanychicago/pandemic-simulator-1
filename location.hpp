@@ -11,7 +11,7 @@ namespace sim{
     Location(double xx, double yy);
     double getDistance(Location point) const;
     bool atLocation(Location destination) const;
-    bool move(Location destination, double speed);
+    bool move(Location* destination, double speed);
     //Getters and setters
     void setX(double x);
     void setY(double y);

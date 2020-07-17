@@ -2,7 +2,6 @@
 #include "simulation.h"
 #include "popularplace.hpp"
 #include <cmath>
-#include <iostream>
 #include <cstdlib>
 
 namespace sim{
@@ -45,7 +44,7 @@ namespace sim{
   void Person::action(){
     if(status != DEAD){
       if(locationStatus == MOVING){
-        if(location->move(*targetLocation, MAX_SPEED)){ //Randomize max speed later for better simulation
+        if(location->move(targetLocation, MAX_SPEED)){ //Randomize max speed later for better simulation
           if(location->atLocation(*(home->location))){
             locationStatus =  AT_HOME;
             timeTillDeparture = rand()%(MAX_TIME_AT_HOME+1);
@@ -59,8 +58,8 @@ namespace sim{
           timeSinceArrival = 0;
           timeTillDeparture = 0;
           locationStatus = MOVING;
-          targetLocation = PopularPlace::places[rand()%(POPULAR_PLACES)]->location; //This
-          location->move(*targetLocation, MAX_SPEED); //This
+          targetLocation = (PopularPlace::places[rand()%POPULAR_PLACES]).location;
+          location->move(targetLocation, MAX_SPEED);
         } else{
           timeSinceArrival++;
         }
@@ -70,7 +69,7 @@ namespace sim{
           timeTillDeparture = 0;
           locationStatus = MOVING;
           targetLocation = home->location;
-          location->move(*targetLocation, MAX_SPEED);
+          location->move(targetLocation, MAX_SPEED);
         } else{
           timeSinceArrival++;
         }

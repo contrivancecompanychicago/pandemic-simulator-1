@@ -40,14 +40,14 @@ namespace sim{
     return (this->getDistance(destination) <= AT);
   }
   //Move to destination
-  bool Location::move(Location destination, double speed){
-    double distance = this->getDistance(destination);
-    double dx = destination.getX() - this->x;
-    double dy = destination.getY() - this->y;
+  bool Location::move(Location* destination, double speed){
+    double distance = this->getDistance(*destination);
+    double dx = destination->getX() - this->x;
+    double dy = destination->getY() - this->y;
     double alpha = atan2(dy, dx);
     if(distance < speed){
-      x = destination.getX();
-      y = destination.getY();
+      x = destination->getX();
+      y = destination->getY();
       return true;
     } else{
       x += speed*cos(alpha);
