@@ -6,7 +6,7 @@
 #define MAX_Y 1000
 
 //Number of people in the simulation
-#define NUM_OF_PEOPLE 400
+#define NUM_OF_PEOPLE 500
 //Max speed of person
 #define MAX_SPEED 50
 

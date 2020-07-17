@@ -1,3 +1,2 @@
 *.h linguist-language=C
-./include linguist-vendored
-./lib linguist-vendored
+./include/SFML/* linguist-vendored

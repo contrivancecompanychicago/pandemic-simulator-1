@@ -6,7 +6,6 @@
 #include "simulation.h"
 #include "popularplace.hpp"
 #include <SFML/Graphics.hpp>
-#include <unistd.h>
 
 extern "C"{
   void logHour(FILE* file, int totalCases, int activeCases, int deaths, int recoveries);
@@ -19,6 +18,7 @@ void simulation(){
   RenderWindow window(VideoMode(MAX_X, MAX_Y), "Pandemic Simulator", Style::Close | Style::Titlebar);
   window.setFramerateLimit(60);
   CircleShape* SFMLPeople = new CircleShape[NUM_OF_PEOPLE];
+  CircleShape* SFMLPopularPlaces = new CircleShape[POPULAR_PLACES];
   Font helvetica_neue;
   helvetica_neue.loadFromFile("./fonts/HelveticaNeueLt.ttf");
   Text starttext;
@@ -55,6 +55,10 @@ void simulation(){
   //Initializing popular places
   for(i=0;i<POPULAR_PLACES;i++){
     PopularPlace place;
+    SFMLPopularPlaces[i] = CircleShape(20.f);
+    SFMLPopularPlaces[i].setPointCount(3);
+    SFMLPopularPlaces[i].setFillColor(Color(255, 242, 0, 100));
+    SFMLPopularPlaces[i].setPosition(Vector2<float>(PopularPlace::places[i].location->getX()-15, PopularPlace::places[i].location->getY()-15));
   }
   //The simulation
   int totalCases = NUMBER_OF_CASES_UPON_START;
@@ -128,6 +132,9 @@ void simulation(){
             }
             SFMLPeople[i].setPosition(Vector2<float>(people[i]->getLocation()->getX(), people[i]->getLocation()->getY()));
             window.draw(SFMLPeople[i]);
+          }
+          for(i=0;i<POPULAR_PLACES;i++){
+            window.draw(SFMLPopularPlaces[i]);
           }
           window.display();
           hourNumber++;
