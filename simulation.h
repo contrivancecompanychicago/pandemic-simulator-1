@@ -42,7 +42,7 @@
 #define VULNERABLE_COLOR Color::White
 #define INFECTED_COLOR Color::Red
 #define IMMUNE_COLOR Color::Blue
-#define DEAD_COLOR Color::Black
+#define DEAD_COLOR Color::Green
 
 namespace sim{
   //Disease status

@@ -1,27 +1,50 @@
+#include <SFML/Graphics.hpp>
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
+#include <cstring>
 #include <vector>
 #include "person.hpp"
 #include "simulation.h"
 #include "popularplace.hpp"
-#include <SFML/Graphics.hpp>
 
 extern "C"{
   void logHour(FILE* file, int totalCases, int activeCases, int deaths, int recoveries);
 }
 
-void simulation(){
+void simulation(bool writeData){
   using namespace sim;
   using namespace sf;
+  int i;
   //SFML initialization
-  RenderWindow window(VideoMode(MAX_X, MAX_Y), "Pandemic Simulator", Style::Close | Style::Titlebar);
+  RenderWindow window(VideoMode(MAX_X, MAX_Y+100), "Pandemic Simulator", Style::Close | Style::Titlebar);
   window.setFramerateLimit(60);
   CircleShape* SFMLPeople = new CircleShape[NUM_OF_PEOPLE];
   CircleShape* SFMLPopularPlaces = new CircleShape[POPULAR_PLACES];
   Font helvetica_neue;
   helvetica_neue.loadFromFile("./fonts/HelveticaNeueLt.ttf");
-  Text starttext;
+  //Text for SFML
+  Text starttext, SFML_vulnerable, SFML_infected, SFML_dead, SFML_immune;
+  Text* stattext[4] = {&SFML_vulnerable, &SFML_infected, &SFML_dead, &SFML_immune};
+  //Text for stats
+  SFML_vulnerable.setFillColor(VULNERABLE_COLOR);
+  SFML_infected.setFillColor(INFECTED_COLOR);
+  SFML_dead.setFillColor(DEAD_COLOR);
+  SFML_immune.setFillColor(IMMUNE_COLOR);
+  SFML_vulnerable.setString(std::to_string(NUM_OF_PEOPLE-NUMBER_OF_CASES_UPON_START));
+  SFML_infected.setString(std::to_string(NUMBER_OF_CASES_UPON_START));
+  SFML_dead.setString("0");
+  SFML_immune.setString("0");
+  { //Scope for positioncounter variable
+    float positioncounter = 0.f;
+    for(i=0;i<4;i++){
+      stattext[i]->setFont(helvetica_neue);
+      stattext[i]->setCharacterSize(75.f);
+      stattext[i]->setPosition(Vector2<float>(5.f+positioncounter , MAX_Y+12.5f));
+      positioncounter+= 75.f*((std::to_string(NUM_OF_PEOPLE)).length());
+    }
+  }
+  //Text for main menu
   starttext.setString("Press space to begin");
   starttext.setCharacterSize(100.f);
   starttext.setFillColor(Color::White);
@@ -33,9 +56,11 @@ void simulation(){
   std::vector<Person*> vulnerablePeople;
   std::vector<Person*> tempPeople;
   srand(time(NULL));
-  FILE* file = fopen("data.csv", "w");
+  FILE* file = NULL;
+  if(writeData){
+    file = fopen("data.csv", "w");
+  }
   //Initializing people
-  int i;
   bool stop = false, paused = true;
   for(i=0;i<NUM_OF_PEOPLE; i++){
     people[i] = new Person();
@@ -136,10 +161,19 @@ void simulation(){
           for(i=0;i<POPULAR_PLACES;i++){
             window.draw(SFMLPopularPlaces[i]);
           }
+          SFML_vulnerable.setString(std::to_string(NUM_OF_PEOPLE-totalCases));
+          SFML_infected.setString(std::to_string(activeCases));
+          SFML_dead.setString(std::to_string(deaths));
+          SFML_immune.setString(std::to_string(recoveries));
+          for(i=0;i<4;i++){
+            window.draw(*(stattext[i]));
+          }
           window.display();
           hourNumber++;
-          logHour(file, totalCases, activeCases, deaths, recoveries);
-          std::cout << "Total Cases: " << totalCases  << " Active Cases: " << activeCases << " Deaths: " << deaths << " Recoveries: " << recoveries <<" Hour:" <<  hourNumber << std::endl;
+          if(writeData){
+            logHour(file, totalCases, activeCases, deaths, recoveries);
+          }
+          //std::cout << "Total Cases: " << totalCases  << " Active Cases: " << activeCases << " Deaths: " << deaths << " Recoveries: " << recoveries <<" Hour:" <<  hourNumber << std::endl;
           stop = true;
         }
       } while(activeCases != 0);
@@ -147,17 +181,34 @@ void simulation(){
       while(window.pollEvent(event)){
         switch(event.type){
           case Event::Closed:
-          fclose(file);
+          if(writeData){
+            fclose(file);
+          }
           final:
           window.close();
         }
       }
     }
   }
-  fclose(file);
+  if(writeData){
+    fclose(file);
+  }
 }
 
-int main(){
-  simulation();
+int main(int argc, char* argv[]){
+  if(argc <= 1){
+    simulation(false);
+  } else{
+    int i;
+    for(i=0;i<argc;i++){
+      if(std::strcmp(argv[i], "-k") == 0){
+        std::cout<<"White Dot - Vulnerable\nRed Dot - Infected\nBlue Dot - Immune/Recovered\nGreen Dot - Dead\nYellow Triangle - Popular Place"<<std::endl;
+      }else if(std::strcmp(argv[i], "-h") == 0){
+        std::cout<<"Help\nArg - Function\n\'-k\' - Key\n\'-d\' - Write data into \'data.csv\' file\n\'-c\' - Console version"<<std::endl;
+      }else if(strcmp(argv[i], "-d") == 0){
+        simulation(true);
+      }
+    }
+  }
   return 0;
 }
