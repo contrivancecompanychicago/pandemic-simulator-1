@@ -6,15 +6,15 @@
 #define MAX_Y 1000
 
 //Number of people in the simulation
-#define NUM_OF_PEOPLE 500
+#define NUM_OF_PEOPLE 1000
 //Max speed of person
-#define MAX_SPEED 50
+#define MAX_SPEED 30
 
 //Number of popular places (must be greater than 0)
-#define POPULAR_PLACES 20
+#define POPULAR_PLACES 67 //Cannot have more than 67 popular places for visualized simulations
 
 //Chance of infection upon contact
-#define INFECTION_CHANCE 0.20
+#define INFECTION_CHANCE 1.00
 
 //Maximum number of hours the infection lasts for
 //Randomize in the future
@@ -24,7 +24,7 @@
 #define INFECTION_RADIUS 2
 
 //Chance that person is social is social distancing
-#define SOCIAL_DISTANCING_CHANCE 0.65
+#define SOCIAL_DISTANCING_CHANCE 0.65 //Coming soon
 
 //Fatality rate
 #define FATALITY_RATE 0.1

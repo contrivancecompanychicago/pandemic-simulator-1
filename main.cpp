@@ -17,11 +17,15 @@ void simulation(bool writeData){
   using namespace sf;
   int i;
   //SFML initialization
-  RenderWindow window(VideoMode(MAX_X, MAX_Y+100), "Pandemic Simulator", Style::Close | Style::Titlebar);
+  RenderWindow window(VideoMode(1000, 1100), "Pandemic Simulator", Style::Close | Style::Titlebar);
   window.setFramerateLimit(60);
   CircleShape* SFMLPeople = new CircleShape[NUM_OF_PEOPLE];
   CircleShape* SFMLPopularPlaces = new CircleShape[POPULAR_PLACES];
   Font helvetica_neue;
+  View mainView(Vector2<float>(500.f, 550.f), Vector2<float>(1000.f, 1100.f));
+  View statView(Vector2<float>(550.f, 55.f), Vector2<float>(1100.f, 90.f));
+  mainView.setViewport(Rect<float>(0.f,0.f, 1.f, 0.9f));
+  statView.setViewport(Rect<float>(0.f,0.9f, 1.f, 0.1f));
   helvetica_neue.loadFromFile("./fonts/HelveticaNeueLt.ttf");
   //Text for SFML
   Text starttext, SFML_vulnerable, SFML_infected, SFML_dead, SFML_immune;
@@ -36,11 +40,11 @@ void simulation(bool writeData){
   SFML_dead.setString("0");
   SFML_immune.setString("0");
   { //Scope for positioncounter variable
-    float positioncounter = 0.f;
+    float positioncounter = 0;
     for(i=0;i<4;i++){
       stattext[i]->setFont(helvetica_neue);
       stattext[i]->setCharacterSize(75.f);
-      stattext[i]->setPosition(Vector2<float>(5.f+positioncounter , MAX_Y+12.5f));
+      stattext[i]->setPosition(Vector2<float>(5.f+positioncounter , 12.5f));
       positioncounter+= 75.f*((std::to_string(NUM_OF_PEOPLE)).length());
     }
   }
@@ -48,7 +52,7 @@ void simulation(bool writeData){
   starttext.setString("Press space to begin");
   starttext.setCharacterSize(100.f);
   starttext.setFillColor(Color::White);
-  starttext.setPosition(Vector2<float>(50.f, MAX_Y/2-100));
+  starttext.setPosition(Vector2<float>(50.f, 400.f));
   starttext.setFont(helvetica_neue);
   //Initializing all of the objects
   Person* people[NUM_OF_PEOPLE];
@@ -78,6 +82,7 @@ void simulation(bool writeData){
     }
   }
   //Initializing popular places
+
   for(i=0;i<POPULAR_PLACES;i++){
     PopularPlace place;
     SFMLPopularPlaces[i] = CircleShape(20.f);
@@ -114,6 +119,25 @@ void simulation(bool writeData){
             }
           }
         }
+        if(Keyboard::isKeyPressed(Keyboard::Left)){
+          statView.setCenter(Vector2<float>(statView.getCenter().x-10, statView.getCenter().y));
+        }
+        if(Keyboard::isKeyPressed(Keyboard::Right)){
+          statView.setCenter(Vector2<float>(statView.getCenter().x+10, statView.getCenter().y));
+        }
+        if(Keyboard::isKeyPressed(Keyboard::W)){
+          mainView.setCenter(Vector2<float>(mainView.getCenter().x, mainView.getCenter().y-25));
+        }
+        if(Keyboard::isKeyPressed(Keyboard::A)){
+          mainView.setCenter(Vector2<float>(mainView.getCenter().x-25, mainView.getCenter().y));
+        }
+        if(Keyboard::isKeyPressed(Keyboard::S)){
+          mainView.setCenter(Vector2<float>(mainView.getCenter().x, mainView.getCenter().y+25));
+        }
+        if(Keyboard::isKeyPressed(Keyboard::D)){
+          mainView.setCenter(Vector2<float>(mainView.getCenter().x+25, mainView.getCenter().y));
+        }
+        window.setView(mainView);
         if(!paused){
           for(i=0; i<infectedPeople.size();i++){
             if(infectedPeople[i] != NULL){
@@ -165,6 +189,7 @@ void simulation(bool writeData){
           SFML_infected.setString(std::to_string(activeCases));
           SFML_dead.setString(std::to_string(deaths));
           SFML_immune.setString(std::to_string(recoveries));
+          window.setView(statView);
           for(i=0;i<4;i++){
             window.draw(*(stattext[i]));
           }
@@ -203,10 +228,12 @@ int main(int argc, char* argv[]){
     for(i=0;i<argc;i++){
       if(std::strcmp(argv[i], "-k") == 0){
         std::cout<<"White Dot - Vulnerable\nRed Dot - Infected\nBlue Dot - Immune/Recovered\nGreen Dot - Dead\nYellow Triangle - Popular Place"<<std::endl;
-      }else if(std::strcmp(argv[i], "-h") == 0){
+      } else if(std::strcmp(argv[i], "-h") == 0){
         std::cout<<"Help\nArg - Function\n\'-k\' - Key\n\'-d\' - Write data into \'data.csv\' file\n\'-c\' - Console version"<<std::endl;
-      }else if(strcmp(argv[i], "-d") == 0){
+      } else if(strcmp(argv[i], "-d") == 0){
         simulation(true);
+      } else if(strcmp(argv[i], "-c") == 0){
+        std::cout<<"Coming soon"<<std::endl;
       }
     }
   }
